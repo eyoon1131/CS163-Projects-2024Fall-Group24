@@ -1,13 +1,13 @@
 ---
 layout: post
 comments: true
-title: Post Template
-author: UCLAdeepvision
-date: 2024-01-01
+title: Super Resolution
+author: Eliot Yoon, Yubo Zhang, Ben Liang, William Park
+date: 2024-12-03
 ---
 
 
-> This block is a brief introduction of your project. You can put your abstract here or any headers you want the readers to know.
+> Super Resolution is an image processing technique that enhances/restores a low resolution image to a higher resolution. We will look at the design and architecture of one of the current cutting-edge models, HAT, and compare its performance to models with different architectures and features.
 
 
 <!--more-->
@@ -15,7 +15,9 @@ date: 2024-01-01
 * TOC
 {:toc}
 
-## Main Content
+## Introduction
+Super resolution is a classical low level image processing task that has been studied for decades. However, the classical model, which assumes a relatively simplistic degradation process from a high resolution to a low resolution image, fails to capture the complex image degradation process of the real world. Convolutional neural networks are better equipped to handle these issues, but still face their own limitations. The recent shift to transformer-based models in deep learning has led to cutting-edge performance in super resolution tasks by capturing long-range dependencies in images. This is the chosen architecture of the HAT model, which utilizes channel attention, self-attention, and overlapping cross-attention to activate more input pixels than other transformer-based models. In this paper we will take an in-depth look at these mechanisms and compare HAT to another transformer-based state-of-the-art model, DRCT, as well as the CNN-based model SRCNN.
+
 Your survey starts here. You can refer to the [source code](https://github.com/lilianweng/lil-log/tree/master/_posts) of [lil's blogs](https://lilianweng.github.io/lil-log/) for article structure ideas or Markdown syntax. We've provided a [sample post](https://ucladeepvision.github.io/CS188-Projects-2022Winter/2017/06/21/an-overview-of-deep-learning.html) from Lilian Weng and you can find the source code [here](https://raw.githubusercontent.com/UCLAdeepvision/CS188-Projects-2022Winter/main/_posts/2017-06-21-an-overview-of-deep-learning.md)
 
 ## Basic Syntax
