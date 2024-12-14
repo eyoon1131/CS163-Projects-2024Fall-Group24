@@ -37,7 +37,7 @@ In order to tackle the problem of having multiple solutions for SISR for any giv
 To address these limitations more effectively, SRCNN was developed in 2014. Deep convolutional neural networks are essentially equivalent to the pipelines of example-based methods; however, hidden layers are utilized to implicitly learn the mappings and further handle tasks such as patch extraction and aggregation.
 
 #### Methodology
-The SRCNN is composed of three main operations: patch extraction and representation, non-linear mapping, and reconstruction. All three operations are implemented using convolutional layers.
+SRCNN is composed of three main operations: patch extraction and representation, non-linear mapping, and reconstruction. All three operations are implemented using convolutional layers.
 
 The patch extraction and representation layer extracts overlapping patches from the low-resolution image and represents each patch as a set of feature maps. This is achieved through a convolutional layer with $$n_1$$ convolutions on the image using a kernel size of $$c \times f_1 \times f_1$$​. Thus, the output is composed of $$n_1$$​ feature maps.
 
@@ -64,7 +64,7 @@ SwinIR (Swin Transformer for Image Restoration) represents a significant leap in
 #### Methodology
 The SwinIR model is designed with a modular architecture comprising three distinct stages: shallow feature extraction, deep feature extraction, and high-quality image reconstruction. This hierarchical design ensures that both low- and high-frequency information is effectively captured and utilized during image restoration.
 
-First, the shallow feature extraction stage employs a single 3x3 convolutional layer to extract low-level features from the input image. Denoted as F0​, these features preserve the low-frequency components of the image, which are crucial for maintaining structural integrity. This stage ensures stable optimization and prepares the input for subsequent deep feature extraction.
+First, the shallow feature extraction stage employs a single 3x3 convolutional layer to extract low-level features from the input image. Denoted as $$F_0$$​, these features preserve the low-frequency components of the image, which are crucial for maintaining structural integrity. This stage ensures stable optimization and prepares the input for subsequent deep feature extraction.
 
 Then, the deep feature extraction module makes up the core of the SwinIR architecture, designed to recover high-frequency details and complex patterns within the image. It comprises a stack of Residual Swin Transformer Blocks (RSTBs), each containing several Swin Transformer layers. Key components of these blocks include:
 - Swin Transformer Layer (STL): Within each RSTB, STLs operate on non-overlapping local windows, computing self-attention separately for each window. There is a shifted window mechanism that alternates between regular and shifted partitions which allows for cross-window interaction while maintaining computational efficiency.
@@ -92,7 +92,7 @@ SwinIR achieves state-of-the-art performance across a range of super-resolution 
 SwinIR significantly advanced the field of image restoration by integrating the Swin Transformer into a modular and efficient architecture. Its ability to balance local and global attention mechanisms, coupled with hierarchical feature extraction, established it as a benchmark for super-resolution and other restoration tasks. However, while SwinIR excels in many aspects, it is not without limitations, particularly in scalability and computational demands for very high-resolution images or real-time applications. In the next section, we will explore how HAT builds upon the foundations laid by models like SwinIR, addressing its limitations and pushing the boundaries of image restoration even further.
 
 ## HAT
-Intuitively, SwinIR performs better than CNN-based models because the self-attention mechanism captures global information better than convolution-based approaches. However, attribution analysis using LAM contradicts this intuition: SwinIR activates the same if not less pixels compared to CNN-based networks like RCAN, and its shift window mechanism caused blocking artifacts and weak cross-window interactions. To address these issues, the Hybrid Attention Transformer (HAT) introduced hybrid attention mechanisms that combine channel attention and self-attention. HAT incorporates self-attention, channel attention, and overlapping cross-attention to improve pixel activation. Additionally, HAT leverages pre-training on large datasets (ImageNet) to enhance its performance, achieving state-of-the-art results in SISR.
+Intuitively, SwinIR performs better than CNN-based models because the self-attention mechanism captures global information better than convolution-based approaches. However, attribution analysis using LAM contradicts this intuition: SwinIR activates the same if not less pixels compared to CNN-based networks like RCAN, and its shift window mechanism causes blocking artifacts and weak cross-window interactions. To address these issues, the Hybrid Attention Transformer (HAT) introduces hybrid attention mechanisms that combine channel attention and self-attention. HAT incorporates self-attention, channel attention, and overlapping cross-attention to improve pixel activation. Additionally, HAT leverages pre-training on large datasets (ImageNet) to enhance its performance, achieving state-of-the-art results in SISR.
 
 ### Visualizing Pixel Activation Using LAM
 Super-resolution networks are different from classification networks in that classification networks output the class that is global to the whole image, while SR networks output images that spatially correspond to the local pixels in the input image. Local Attribution Map (LAM) is a technique to interpret super-resolution networks based on the integrated gradient method.
@@ -122,7 +122,7 @@ When comparing the LAM result between RCAN, SwinIR, and HAT, the HAT model activ
 Given an input low-resolution image, the network first uses a convolution layer to extract shallow features. Then, the model applies a series of Residual Hybrid Attention Groups (RHAG) to attend to deep features that are very specific to the variations in the data sample. Another convolution layer is used to extract deep features at the end of the deep feature extraction block. A global residual connection is used to fuse the shallow and deep features. At the end, transpose convolution layers are used to reconstruct the image.
 
 ### Implementation of the HAB
-To improve pixel activation, RHAG also uses an Overlapping Cross-Attention Block (OCAB) to establish connections across windows by computing cross-attention. RHAG also utilizes a novel Hybrid Attention Block (HAB) that incorporates a Channel Attention-based Convolution block (CAB) along with the original window-based Multi-head Self Attention (W-MSA) to help the transformer block to get better visual representation ability. HAB can be implemented in Pytorch as below.
+To improve pixel activation, RHAG also uses an Overlapping Cross-Attention Block (OCAB) to establish connections across windows by computing cross-attention. RHAG also utilizes a novel Hybrid Attention Block (HAB) that incorporates a Channel Attention-based Convolution block (CAB) along with the original Window-based Multi-head Self-Attention (W-MSA) to help the transformer block to get better visual representation ability. HAB can be implemented in Pytorch as below.
 
 ```
 class HAB(nn.Module):
@@ -197,7 +197,7 @@ Furthermore, the PSNR and SSIM of HAT on the Set5 dataset using SRx4 are shown b
 <!-- {: style="width: 600px; max-width: 100%;"} -->
 *Fig 8. PSNR and SSIM metrics of various SR models on various testing datasets* [3].
 
-The two left-most columns give the PSNR and SSIM scores on the Set5 dataset. Of note are SwinIR’s scores of 32.92 and 0.9044 at the top and HAT’s scores at the bottom. The HAT models listed differ only in size and pre-training strategy. These show a marked improvement over SwinIR by every HAT model, with the best model giving an improvement of 0.38 dB in PSNR and 0.0039 in SSIM. Additionally, both of these models show a drastic improvement over SRCNN.
+The fourth and fifth columns give the PSNR and SSIM scores on the Set5 dataset. Of note are SwinIR’s scores of 32.92 and 0.9044 at the top and HAT’s scores at the bottom. The HAT models listed differ only in size and pre-training strategy. These show a marked improvement over SwinIR by every HAT model, with the best model giving an improvement of 0.38 dB in PSNR and 0.0039 in SSIM. Additionally, both of these models show a drastic improvement over SRCNN.
 
 ### Experiments
 We applied the HAT model to a few open-source images found on the UCLA newsroom website including images of campus architecture and people, as well as the Urban100 SRx4 (upscaling by a factor of 4) test dataset. We used the bicubic interpolation method to downgrade the high-resolution images and applied the HAT SRx4 model pre-trained on ImageNet.
@@ -248,7 +248,7 @@ HAT Folder: [Drive](https://drive.google.com/drive/folders/1prVr26Rt1KN6YA7WFQtY
 The results of our experiments with HAT demonstrate the extraordinary potential of super-resolution models. Our images show that the model performs admirably on diverse datasets. The potential impact of this technology on society is difficult to quantify, as it has the potential to save lives if successfully applied to areas such as medicine or surveillance, although as with any technology, there are moral concerns to consider. HAT is not without its limitations, as can be seen in some of the predicted images, particularly the ones involving people. Due to the limitations of the training dataset, it was difficult for the model to predict intricate details in its reconstructions of our test sets. Further research is already being conducted to solve these issues, and only a year after the release of HAT new models have been released that outperform HAT in certain datasets, such as HMA and DRCT, showing that the future of image super-resolution is bright.
 
 ## References
-[1] Dong, Chao, et al. "Image Super-Resolution Using Deep Convolutional Networks" *	arXiv:1501.00092*. 2014.
+[1] Dong, Chao, et al. "Image Super-Resolution Using Deep Convolutional Networks" *arXiv:1501.00092*. 2014.
 
 [2] Liang, Jingyun, et al. "SwinIR: Image Restoration Using Swin Transformer" *arXiv:2108.10257*. 2021.
 
