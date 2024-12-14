@@ -3,7 +3,7 @@ layout: post
 comments: true
 title: Super Resolution
 author: Eliot Yoon, Yubo Zhang, Ben Liang, William Park
-date: 2024-12-03
+date: 2024-12-13
 ---
 
 
@@ -39,7 +39,7 @@ To address these limitations more effectively, SRCNN was developed in 2014. Deep
 #### Methodology
 The SRCNN is composed of three main operations: patch extraction and representation, non-linear mapping, and reconstruction. All three operations are implemented using convolutional layers.
 
-The patch extraction and representation layer extracts overlapping patches from the low-resolution image and represents each patch as a set of feature maps. This is achieved through a convolutional layer with n1n_1n1​ convolutions on the image using a kernel size of c×f1×f1c \times f_1 \times f_1c×f1​×f1​. Thus, the output is composed of n1n_1n1​ feature maps.
+The patch extraction and representation layer extracts overlapping patches from the low-resolution image and represents each patch as a set of feature maps. This is achieved through a convolutional layer with $$n_1$$ convolutions on the image using a kernel size of $$c \times f_1 \times f_1$$​. Thus, the output is composed of $$n_1$$​ feature maps.
 
 The non-linear mapping operation maps each high-dimensional vector onto another high-dimensional vector. Conceptually, each vector is a representation of a high-resolution patch. While it is possible to add more layers to this operation, doing so increases the training time.
 
@@ -195,7 +195,7 @@ Furthermore, the PSNR and SSIM of HAT on the Set5 dataset using SRx4 are shown b
 
 ![HAT_Metrics]({{ '/assets/images/team24/metrics_hat.png' | relative_url }})
 <!-- {: style="width: 600px; max-width: 100%;"} -->
-*Fig 8. PSNR and SSIM metrics of various SR models on the Set5 testing dataset* [3].
+*Fig 8. PSNR and SSIM metrics of various SR models on various testing datasets* [3].
 
 The two left-most columns give the PSNR and SSIM scores on the Set5 dataset. Of note are SwinIR’s scores of 32.92 and 0.9044 at the top and HAT’s scores at the bottom. The HAT models listed differ only in size and pre-training strategy. These show a marked improvement over SwinIR by every HAT model, with the best model giving an improvement of 0.38 dB in PSNR and 0.0039 in SSIM. Additionally, both of these models show a drastic improvement over SRCNN.
 
@@ -215,10 +215,37 @@ Below are additional results from testing on the Urban100 dataset since we obser
 ![Urban2]({{ '/assets/images/team24/urban2.png' | relative_url }})
 *Fig 10. Reconstruction results of HAT SRx4 ImageNet pre-trained model on Urban100 dataset*.
 
-The model achieves great, albeit not perfect, performance. The predicted images in the Urban100 dataset show a certain lack of granularity and fine detail. Overall,  however, the experiments support the claim that more pixel activation in the input image would lead to a better reconstruction result in the super-resolution task.
+<style>
+  table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+  table, th, td {
+      border: 1px solid black;
+  }
+</style>
+
+|             | PSNR        |  SSIM         |
+| :---:       |    :---:    |         :---: |
+| UCLA        | 27.0516     | 0.7833        |
+| Urban100    | 28.3642     | 0.8445        |
+
+*Fig 11. The result metrics of our tests on UCLA and Urban100*.
+
+As can be seen above, the model achieves great, albeit not perfect, performance. The predicted images in both datasets show a slight lack of granularity and fine detail. Overall, however, the experiments support the claim that more pixel activation in the input image would lead to a better reconstruction result in the super-resolution task.
+
+## Demo
+The results from above can be replicated using the demo Colab notebook in the Code section below. First, download the HAT folder from the Google Drive link below and add it to your own Google Drive. Then, follow the instructions in the Colab Notebook. The provided folder already has the results of our own tests in the results folder. It also comes with some models and datasets pre-downloaded.
+
+## Code
+HAT Codebase: [GitHub](https://github.com/XPixelGroup/HAT)
+
+HAT Demo: [Colab](https://colab.research.google.com/drive/1ZUCGVY-OpklvlUL3gKnSQ5I07kPo7mPc?usp=sharing)
+
+HAT Folder: [Drive](https://drive.google.com/drive/folders/1prVr26Rt1KN6YA7WFQtY8VqSwGl60Ej_?usp=sharing)
 
 ## Conclusion
-The results of our experiments with HAT demonstrate the extraordinary potential of super-resolution models. Our images show that the model performs admirably on diverse datasets. The potential impact of this technology on society is difficult to quantify, as it has the potential to save lives if successfully applied to areas such as medicine or surveillance, although as with any technology, there are moral concerns to consider. HAT is not without its limitations, as can be seen in the predicted images involving people. Furthermore, it is difficult for the model to predict intricate details in its reconstructions. Further research is already being conducted to solve these issues, and only a year after the release of HAT new models have been released that outperform HAT in certain datasets, such as HMA and DRCT, showing that the future of image super-resolution is bright.
+The results of our experiments with HAT demonstrate the extraordinary potential of super-resolution models. Our images show that the model performs admirably on diverse datasets. The potential impact of this technology on society is difficult to quantify, as it has the potential to save lives if successfully applied to areas such as medicine or surveillance, although as with any technology, there are moral concerns to consider. HAT is not without its limitations, as can be seen in some of the predicted images, particularly the ones involving people. Due to the limitations of the training dataset, it was difficult for the model to predict intricate details in its reconstructions of our test sets. Further research is already being conducted to solve these issues, and only a year after the release of HAT new models have been released that outperform HAT in certain datasets, such as HMA and DRCT, showing that the future of image super-resolution is bright.
 
 ## References
 [1] Dong, Chao, et al. "Image Super-Resolution Using Deep Convolutional Networks" *	arXiv:1501.00092*. 2014.
